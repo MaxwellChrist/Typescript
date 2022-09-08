@@ -1,1 +1,1 @@
-"# Typescript" 
+I'm starting to learn typescript and I'm picking up online resources to learn the basics in this repo. Therefore, this repo isn't intended to be a full-fledged project I intend to create or a portfolio piece by any means. It's a space where I can understand the basics and reference later when I migrate to creating my own projects
