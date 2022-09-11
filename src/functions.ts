@@ -1,4 +1,4 @@
-function add(n1: number, n2: number) {
+function add2(n1: number, n2: number) {
     return n1 + n2
 }
 
@@ -11,10 +11,10 @@ function addSomethingElse(n1: number, n2: number, cb: (a: number) => void) {
     cb(result)
 }
 
-printSomething(add(5,4))
+printSomething(add2(5,4))
 
 let combinedVals: (a: number, b: number) => number
-combinedVals = add
+combinedVals = add2
 console.log(combinedVals(8,5))
 
 addSomethingElse(10, 20, (result) => {

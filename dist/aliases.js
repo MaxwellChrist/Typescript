@@ -15,3 +15,4 @@ const combinedAgesStr = combine("30", "34", "num");
 console.log(combinedAgesStr);
 const combinedNames = combine("Jeff", "Anna", "str");
 console.log(combinedNames);
+//# sourceMappingURL=aliases.js.map

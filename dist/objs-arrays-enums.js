@@ -29,3 +29,4 @@ console.log(person2);
 if (person2.role === Role.ADMIN) {
     console.log(`this is a read only message for ${Role[0].toLowerCase()}`);
 }
+//# sourceMappingURL=objs-arrays-enums.js.map

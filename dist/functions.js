@@ -11,8 +11,9 @@ function addSomethingElse(n1, n2, cb) {
 }
 printSomething(add2(5, 4));
 let combinedVals;
-combinedVals = add;
+combinedVals = add2;
 console.log(combinedVals(8, 5));
 addSomethingElse(10, 20, (result) => {
     console.log(result);
 });
+//# sourceMappingURL=functions.js.map
