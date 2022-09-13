@@ -36,12 +36,19 @@ type Numeric = number | boolean
 
 type Universal = Combinable & Numeric
 
-function ad(a: Combinable, b: Combinable) {
+function addThis(a: number, b: number): number;
+function addThis(a: string, b: string): string;
+function addThis(a: number, b: string): string;
+function addThis(a: string, b: number): string;
+function addThis(a: Combinable, b: Combinable) {
     if (typeof a === "string" || typeof b === "string") {
         return a.toString() + b.toString()
     }
     return a + b
 }
+
+const callAddThis = addThis("Max", "Christ")
+callAddThis.split(' ')
 
 class Car {
     drive() {
@@ -101,6 +108,28 @@ moveAnimal({type: "bird", flyingSpeed: 42})
 
 const paragraph = document.querySelector('p');
 const paragraph2 = <HTMLInputElement>document.getElementById('message-output');
-const paragraph3 = document.getElementById('message-output') as HTMLInputElement;
+const paragraph3 = document.getElementById('message-output')! as HTMLInputElement;
 paragraph2.value = "Hi there!"
 paragraph3.value = "Hi again"
+
+interface ErrorContainer {
+    [key: string]: string
+    id: string
+}
+
+const errorBag: ErrorContainer = {
+    id: "1",
+    email: "No a valid email",
+    username: "Username must contain more than three and less than 12 characters"
+}
+
+const fetchedUserData = {
+    id: 'u1',
+    name: 'Max',
+    job: { title: "CEO", description: "It's my company, I do what I want!" }
+}
+console.log(fetchedUserData?.job?.title)
+
+const userStuff = null
+const storedData = userStuff ?? "Default"
+console.log(storedData)
