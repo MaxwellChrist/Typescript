@@ -1,28 +1,65 @@
 "use strict";
-let adder;
-adder = (n1, n2) => n1 + n2;
-let adder2;
-class Person {
-    constructor(constructorName, constructorAge) {
-        this.age = 55;
-        this.name = constructorName;
-        if (constructorAge) {
-            this.age = constructorAge;
-        }
+function printEmployeeInfo(person) {
+    console.log("Name: " + person.name);
+    if ("privileges" in person) {
+        console.log("Privileges: " + person.privileges);
     }
-    greet(phrase) {
-        console.log(phrase + " " + this.name);
-    }
-    AddFn2(a, b) {
-        return a + b;
+    if ("startDate" in person) {
+        console.log("start date: " + person.startDate);
     }
 }
-let user1;
-user1 = new Person("Max");
-user1.greet("Hello there, I am");
-console.log(user1);
-let user2;
-user2 = new Person("Joe", 33);
-user2.greet("Goodbye");
-console.log(user2);
+const e1 = {
+    name: "Max",
+    privileges: ['create-server'],
+    startDate: new Date()
+};
+printEmployeeInfo(e1);
+printEmployeeInfo({ name: "Joe", startDate: new Date() });
+function ad(a, b) {
+    if (typeof a === "string" || typeof b === "string") {
+        return a.toString() + b.toString();
+    }
+    return a + b;
+}
+class Car {
+    drive() {
+        console.log("Driving...");
+    }
+}
+class Truck {
+    drive() {
+        console.log("Driving a truck...");
+    }
+    loadCargo(amount) {
+        console.log("Loading cargo..." + amount);
+    }
+}
+const v1 = new Car();
+const v2 = new Truck();
+function useVehicle(vehicle) {
+    vehicle.drive();
+    if (vehicle instanceof Truck) {
+        vehicle.loadCargo(33);
+    }
+}
+useVehicle(v1);
+useVehicle(v2);
+function moveAnimal(animal) {
+    let speed;
+    switch (animal.type) {
+        case "bird":
+            speed = animal.flyingSpeed;
+            break;
+        case "horse":
+            speed = animal.runningSpeed;
+            break;
+    }
+    console.log("Moving with speed of " + speed + " mph");
+}
+moveAnimal({ type: "bird", flyingSpeed: 42 });
+const paragraph = document.querySelector('p');
+const paragraph2 = document.getElementById('message-output');
+const paragraph3 = document.getElementById('message-output');
+paragraph2.value = "Hi there!";
+paragraph3.value = "Hi again";
 //# sourceMappingURL=app.js.map

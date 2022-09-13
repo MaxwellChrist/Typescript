@@ -1,47 +1,106 @@
-type AddFn = (a: number, b: number) => number
-let adder: AddFn
-adder = (n1: number, n2: number) => n1 + n2
-
-interface AddFn2 {
-    (a: number, b: number): number
-}
-let adder2: AddFn2
-
-interface Named {
-    readonly name: string;
-    outputName?: string
+type Admin = {
+    name: string;
+    privileges: string[];
 }
 
-interface Greetable extends Named {
-    greet(phrase: string): void
+type Employee = {
+    name: string;
+    startDate: Date
 }
 
-class Person implements Greetable {
-    name: string
-    age= 55;
+type ElevatedEmployee = Admin & Employee
 
-    constructor(constructorName: string, constructorAge?: number) {
-        this.name = constructorName
-        if (constructorAge) {
-          this.age = constructorAge
-        }
+type UnknownEmployee = Employee | Admin
+
+function printEmployeeInfo(person: UnknownEmployee) {
+    console.log("Name: " + person.name)
+    if ("privileges" in person) {
+        console.log("Privileges: " + person.privileges)
     }
-
-    greet(phrase: string) {
-        console.log(phrase + " " + this.name)
+    if ("startDate" in person) {
+        console.log("start date: " + person.startDate)
     }
-
-    AddFn2(a: number, b: number) {
-        return a + b
-    }
-
 }
 
-let user1: Greetable
-user1 = new Person("Max")
-user1.greet("Hello there, I am")
-console.log(user1)
-let user2: Greetable
-user2 = new Person("Joe", 33)
-user2.greet("Goodbye")
-console.log(user2)
+const e1: ElevatedEmployee = {
+    name: "Max",
+    privileges: ['create-server'],
+    startDate: new Date()
+}
+
+printEmployeeInfo(e1)
+printEmployeeInfo({name: "Joe", startDate: new Date()})
+
+type Combinable = string | number
+type Numeric = number | boolean
+
+type Universal = Combinable & Numeric
+
+function ad(a: Combinable, b: Combinable) {
+    if (typeof a === "string" || typeof b === "string") {
+        return a.toString() + b.toString()
+    }
+    return a + b
+}
+
+class Car {
+    drive() {
+        console.log("Driving...")
+    }
+}
+
+class Truck {
+    drive() {
+        console.log("Driving a truck...")
+    }
+    loadCargo(amount: number) {
+        console.log("Loading cargo..." + amount)
+    }
+}
+
+type Vehicle = Car | Truck
+const v1 = new Car()
+const v2 = new Truck()
+
+function useVehicle(vehicle: Vehicle) {
+    vehicle.drive()
+    if (vehicle instanceof Truck) {
+        vehicle.loadCargo(33)
+    }
+}
+
+useVehicle(v1)
+useVehicle(v2)
+
+interface Bird {
+    type: "bird"
+    flyingSpeed: number;
+}
+
+interface Horse {
+    type: "horse"
+    runningSpeed: number
+}
+
+type Animal = Bird | Horse
+
+function moveAnimal(animal: Animal) {
+    let speed
+    switch(animal.type) {
+        case "bird":
+            speed = animal.flyingSpeed
+            break
+        case "horse":
+            speed = animal.runningSpeed
+            break
+    }
+    console.log("Moving with speed of " + speed + " mph")
+}
+
+moveAnimal({type: "bird", flyingSpeed: 42})
+
+const paragraph = document.querySelector('p');
+const paragraph2 = <HTMLInputElement>document.getElementById('message-output');
+const paragraph3 = document.getElementById('message-output') as HTMLInputElement;
+paragraph2.value = "Hi there!"
+paragraph3.value = "Hi again"
