@@ -1,62 +1,88 @@
 "use strict";
-const names = ["Max", "Andy"];
-const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve("This is done");
-    }, 2000);
-});
-promise.then(data => {
-    data.split(' ');
-});
-function mergeObjs(objA, objB) {
-    return Object.assign(objA, objB);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+function Logger(logString) {
+    console.log("firing Logger Decorator");
+    return function (constructor) {
+        console.log(logString);
+        console.log(constructor);
+    };
 }
-const merged = mergeObjs({ name: "Max" }, { age: 31 });
-function countAndPrint(element) {
-    let description = "Got no value";
-    if (element.length === 1) {
-        description = "Got 1 element";
-    }
-    else if (element.length > 1) {
-        description = "Got " + element.length + " elements";
-    }
-    return [element, description];
+function WithTemplate(template, hookID) {
+    console.log("firing withTemplate Decorator");
+    return function (originalConstructor) {
+        return class extends originalConstructor {
+            constructor(..._) {
+                super();
+                const element = document.getElementById(hookID);
+                if (element) {
+                    element.innerHTML = template;
+                    element.querySelector("h1").textContent = this.name;
+                }
+            }
+        };
+    };
 }
-console.log(countAndPrint("Hi there!"));
-console.log(countAndPrint([]));
-console.log(countAndPrint(["Sports", "Cooking"]));
-function extractAndConvert(obj, key) {
-    return "Value: " + obj[key];
-}
-console.log(extractAndConvert({ name: "Melissa" }, "name"));
-class DataStorage {
+let FindSomeone = class FindSomeone {
     constructor() {
-        this.data = [];
+        this.name = "Jeff";
+        console.log("creating findSomeone object...");
     }
-    addItem(item) {
-        this.data.push(item);
+};
+FindSomeone = __decorate([
+    Logger("Logging..."),
+    WithTemplate("<h1>My Person Object</h1>", "app")
+], FindSomeone);
+const someone = new FindSomeone();
+console.log(someone);
+function Log(target, propertyName) {
+    console.log("Property decorator");
+    console.log(target, propertyName);
+}
+function Log2(target, name, descriptor) {
+    console.log("Accessor decorator");
+    console.log(target, name, descriptor);
+}
+function Log3(target, name, descriptor) {
+    console.log("Method decorator");
+    console.log(target, name, descriptor);
+}
+function Log4(target, name, position) {
+    console.log("Parameter decorator");
+    console.log(target, name, position);
+}
+class Product {
+    constructor(t, p) {
+        this.title = t;
+        this._price = p;
     }
-    removeItem(item) {
-        this.data.splice(this.data.indexOf(item), 1);
+    set price(val) {
+        if (val > 0) {
+            this._price = val;
+        }
+        else {
+            throw new Error("Invalid price - should be positive");
+        }
     }
-    getItems() {
-        return [...this.data];
+    getPriceWithTax(tax) {
+        return this._price * (1 + tax);
     }
 }
-const textStorage = new DataStorage();
-textStorage.addItem("Max");
-textStorage.addItem("Ali");
-textStorage.removeItem("Max");
-console.log(textStorage.getItems());
-const numberStorate = new DataStorage();
-function createCourseGoal(title, description, date) {
-    let courseGoal = {};
-    courseGoal.title = title;
-    courseGoal.description = description;
-    courseGoal.completeUntil = date;
-    return courseGoal;
-}
-const babyNames = ["Leo", "Danny"];
-babyNames.push("Sally");
-babyNames.pop();
+__decorate([
+    Log
+], Product.prototype, "title", void 0);
+__decorate([
+    Log2
+], Product.prototype, "price", null);
+__decorate([
+    Log3,
+    __param(0, Log4)
+], Product.prototype, "getPriceWithTax", null);
 //# sourceMappingURL=app.js.map
