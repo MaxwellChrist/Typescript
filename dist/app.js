@@ -30,8 +30,30 @@ class ProjectInput {
         this.configure();
         this.attach();
     }
+    gatherInput() {
+        const enteredTitle = this.title.value;
+        const enteredDescription = this.description.value;
+        const enteredPeople = this.people.value;
+        if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredPeople.trim().length === 0) {
+            return console.log("Invalid inputs...please try again");
+        }
+        else {
+            return [enteredTitle, enteredDescription, +enteredPeople];
+        }
+    }
+    clearInputs() {
+        this.title.value = "";
+        this.description.value = "";
+        this.people.value = "";
+    }
     onSubmit(e) {
         e.preventDefault();
+        const input = this.gatherInput();
+        if (Array.isArray(input)) {
+            const [title, desc, ppl] = input;
+            console.log(title, desc, ppl);
+            this.clearInputs();
+        }
         console.log(this.title.value);
     }
     configure() {
