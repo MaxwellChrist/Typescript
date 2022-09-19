@@ -11,6 +11,35 @@ function autobind(target: any, methodName: string, descriptor: PropertyDescripto
     return adjDescriptor
 }
 
+// validator
+interface Validator {
+    value: string | number,
+    required?: boolean,
+    minLength?: number,
+    maxLength?: number,
+    min?: number,
+    max?: number,
+}
+
+function getValidation(input: Validator) {
+    let isValid = true;
+    if (input.required) {
+        isValid = isValid && input.value.toString().trim().length !== 0
+    }
+    if (input.minLength != null && typeof input.value === "string") {
+        isValid = isValid && input.value.length >= input.minLength
+    }
+    if (input.maxLength != null && typeof input.value === "string") {
+        isValid = isValid && input.value.length <= input.maxLength
+    }
+    if (input.min != null && typeof input.value === "number") {
+        isValid = isValid && input.value >= input.min
+    }
+    if (input.max != null && typeof input.value === "number") {
+        isValid = isValid && input.value <= input.max
+    }
+    return isValid
+}
 
 class ProjectInput {
     template: HTMLTemplateElement
@@ -41,7 +70,26 @@ class ProjectInput {
         const enteredDescription = this.description.value
         const enteredPeople= this.people.value
 
-        if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredPeople.trim().length === 0 ) {
+        const titleValid: Validator = {
+            value: enteredTitle,
+            required: true
+        }
+        const descriptionValid: Validator = {
+            value: enteredDescription,
+            required: true,
+            minLength: 5
+        }
+        const peopleValid: Validator = {
+            value: +enteredPeople,
+            required: true,
+            min: 1,
+            max: 10
+        }
+
+        if (!getValidation(titleValid) ||
+            !getValidation(descriptionValid) ||
+            !getValidation(peopleValid)
+        ) {
             return console.log("Invalid inputs...please try again")
         } else {
             return [enteredTitle, enteredDescription, +enteredPeople]
