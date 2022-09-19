@@ -23,7 +23,7 @@ function WithTemplate(template: string, hookID: string) {
 }
 
 @Logger("Logging...")
-@WithTemplate("<h1>My Person Object</h1>", "app")
+@WithTemplate("<h1>My Person Object</h1>", "decorator-div")
 
 class FindSomeone {
     name = "Jeff";
