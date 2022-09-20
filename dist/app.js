@@ -17,6 +17,37 @@ function autobind(target, methodName, descriptor) {
     };
     return adjDescriptor;
 }
+// state manager class
+class StateManager {
+    constructor() {
+        this.listeners = [];
+        this.projects = [];
+    }
+    static getInstance() {
+        if (this.instance) {
+            return this.instance;
+        }
+        this.instance = new StateManager();
+        return this.instance;
+    }
+    addListener(listenerFn) {
+        this.listeners.push(listenerFn);
+    }
+    addProject(title, description, people) {
+        const newProject = {
+            id: Math.round(Math.random() * 100).toString(),
+            title: title,
+            description: description,
+            people: people,
+        };
+        this.projects.push(newProject);
+        for (const listenerFn of this.listeners) {
+            listenerFn(this.projects.slice());
+        }
+    }
+}
+// instantiate project state
+const projectState = StateManager.getInstance();
 function getValidation(input) {
     let isValid = true;
     if (input.required) {
@@ -41,11 +72,24 @@ class ProjectList {
         this.type = type;
         this.template = document.getElementById("project-list");
         this.host = document.getElementById("app");
+        this.assignedProjects = [];
         const importedNode = document.importNode(this.template.content, true);
         this.element = importedNode.firstElementChild;
         this.element.id = `${this.type}-projects`;
+        projectState.addListener((projects) => {
+            this.assignedProjects = projects;
+            this.renderProjects();
+        });
         this.attach();
         this.renderer();
+    }
+    renderProjects() {
+        const listEl = document.getElementById(`${this.type}-projects-list`);
+        for (const item of this.assignedProjects) {
+            const listItem = document.createElement("li");
+            listItem.textContent = item.title;
+            listEl.appendChild(listItem);
+        }
     }
     renderer() {
         const listId = `${this.type}-projects-list`;
@@ -107,10 +151,9 @@ class ProjectInput {
         const input = this.gatherInput();
         if (Array.isArray(input)) {
             const [title, desc, ppl] = input;
-            console.log(title, desc, ppl);
+            projectState.addProject(title, desc, ppl);
             this.clearInputs();
         }
-        console.log(this.title.value);
     }
     configure() {
         // the autobind decorator above removes the need for the below code
